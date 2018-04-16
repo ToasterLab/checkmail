@@ -1,0 +1,11 @@
+# Python
+__pycache__
+.venv
+
+# IDE
+.vscode
+
+# Serverless
+.serverless/
+.requirements/
+node_modules/

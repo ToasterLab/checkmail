@@ -1,0 +1,35 @@
+service: check-mail
+
+provider:
+  name: aws
+  runtime: python3.6
+  region: ap-southeast-1
+  profile: huey
+  stage: prod
+
+  memorySize: 256
+  timeout: 90s
+
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: true
+
+package:
+  exclude:
+    - node_modules/**
+    - .venv/**
+    - .gitignore
+    - .git/**
+
+functions:
+  app:
+    handler: wsgi.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
