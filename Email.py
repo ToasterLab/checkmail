@@ -37,16 +37,19 @@ class Email:
         return {'result': True, 'mx': mx_record}
 
     def check_smtp(self):
-        server = smtplib.SMTP()
-        server.connect(self.mx)
-        server.helo(server.local_hostname)
-        server.mail(self.from_address)
-        code, message = server.rcpt(self.address)
-        server.quit()
-        if code == 250:
-            return {'result': True}
-        else:
-            return {'result': False, 'message': str(message)}
+        try:
+            server = smtplib.SMTP()
+            server.connect(self.mx)
+            server.helo(server.local_hostname)
+            server.mail(self.from_address)
+            code, message = server.rcpt(self.address)
+            server.quit()
+            if code == 250:
+                return {'result': True}
+            else:
+                return {'result': False, 'message': str(message)}
+        except smtplib.SMTPServerDisconnected:
+            return {'result': False, 'message': "SMTP server unexpectedly disconnected"}
 
     def check_deliverability(self):
         validity = {'overall': False}
@@ -73,7 +76,3 @@ class Email:
 
     def __str__(self):
         return str(vars(self))
-
-
-e = Email('bill@gates.com')
-print(e)
