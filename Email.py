@@ -7,7 +7,7 @@ import dns.resolver
 class Email:
     def __init__(self, address, from_address=f"root@{socket.gethostname()}"):
         self.address = address
-        self.from_address = from_address
+        self.from_address = "leejinhuey@gmail.com" # from_address
         self.username = self.get_username()
         self.domain = self.get_domain()
         self.valid = self.check_deliverability()
@@ -50,6 +50,12 @@ class Email:
                 return {'result': False, 'message': str(message)}
         except smtplib.SMTPServerDisconnected:
             return {'result': False, 'message': "SMTP server unexpectedly disconnected"}
+        except socket.gaierror as error:
+            return {'result': False, 'message': str(error)}
+        except socket.timeout:
+            return {'result': False, 'message': "SMTP server connection timed out"}
+        except socket.error as error:
+            return {'result': False, 'message': f"Socker Error: {str(error)}"}
 
     def check_deliverability(self):
         validity = {'overall': False}
