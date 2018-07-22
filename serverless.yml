@@ -18,7 +18,7 @@ custom:
     app: app.app
     packRequirements: false
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: false
 
 package:
   exclude:

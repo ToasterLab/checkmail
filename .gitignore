@@ -9,3 +9,4 @@ __pycache__
 .serverless/
 .requirements/
 node_modules/
+wsgi.py
